@@ -1,0 +1,92 @@
+﻿@model MVC_Core.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function SetCategory() {
+        var x = $("input[name=dllCategory]").val($(this).find("option:selected").text());
+        debugger;
+        $("#CategoryID").val($("#dllCategory option:selected").text());
+    }
+
+    //function Details(id) {
+    //    $.ajax({
+    //        url: '@Url.Action("Details", "Products")',
+    //        type: 'POST',
+    //        dataType: 'json',
+    //        async: false,
+    //        data: {
+    //            id: id,
+    //        },
+    //        success: function (results) {
+    //        },
+    //        error: function (results) {
+               
+    //        }
+    //    });
+
+    //}
+</script>
+<h1>Products</h1>
+
+<form method="post" asp-controller="Products" asp-action="Index">
+    <div class="row">
+        <div class="col-md-4">
+            @Html.DropDownListFor(m => m.CateogryID, (IEnumerable<SelectListItem>)@ViewBag.Categories, "Please select",new{@class="form-control"})
+        </div>
+        <div class="col-md-2">
+        <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+
+            <th>
+                Category
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ProductsList)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-controller="Products" asp-route-id="@item.ID">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-controller="Products"  asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
